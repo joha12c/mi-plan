@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Mi Plan · Sofia Bernate</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum: #6b2d5e;
+    --plum-light: #9b4d8c;
+    --plum-pale: #f5edf3;
+    --plum-mid: #e8d0e3;
+    --cream: #fdf8f5;
+    --dark: #1e1219;
+    --text: #3d2235;
+    --muted: #9e7d93;
+    --green: #4a9e6e;
+    --green-bg: #eaf5ef;
+    --orange: #d4703a;
+    --orange-bg: #fdf0e8;
+    --gold: #c4982a;
+    --gold-bg: #fdf6e3;
+    --radius: 16px;
+    --shadow: 0 4px 24px rgba(107,45,94,0.10);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    max-width: 430px;
+    margin: 0 auto;
+    padding-bottom: 90px;
+  }
+
+  /* ── TOP BAR ── */
+  .topbar {
+    background: var(--plum);
+    padding: 20px 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(107,45,94,0.25);
+  }
+  .topbar-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: white;
+    line-height: 1;
+  }
+  .brand span {
+    font-size: 10px;
+    font-family: 'DM Sans', sans-serif;
+    letter-spacing: 2px;
+    opacity: 0.7;
+    display: block;
+    margin-top: 2px;
+    text-transform: uppercase;
+  }
+  .date-pill {
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 5px 12px;
+    font-size: 11px;
+    color: rgba(255,255,255,0.9);
+    font-weight: 500;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    background: white;
+    border-bottom: 1px solid var(--plum-mid);
+    position: sticky;
+    top: 77px;
+    z-index: 99;
+  }
+  .tab {
+    flex: 1;
+    padding: 12px 8px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    text-transform: uppercase;
+  }
+  .tab.active {
+    color: var(--plum);
+    border-bottom-color: var(--plum);
+  }
+
+  /* ── PANELS ── */
+  .panel { display: none; padding: 16px; }
+  .panel.active { display: block; }
+
+  /* ── MACRO BAR ── */
+  .macro-summary {
+    background: white;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-bottom: 14px;
+    box-shadow: var(--shadow);
+  }
+  .macro-summary h3 {
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 12px;
+    font-weight: 600;
+  }
+  .macro-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .macro-item { text-align: center; }
+  .macro-item .m-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--plum);
+    line-height: 1;
+  }
+  .macro-item .m-label {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+  .macro-item .m-progress {
+    height: 3px;
+    background: var(--plum-mid);
+    border-radius: 10px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+  .macro-item .m-progress-fill {
+    height: 100%;
+    background: var(--plum);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+
+  /* ── DAY HEADER ── */
+  .day-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .day-nav-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--plum-mid);
+    background: white;
+    color: var(--plum);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .day-nav-btn:hover { background: var(--plum); color: white; }
+  .day-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text);
+  }
+  .day-label span {
+    font-size: 11px;
+    font-family: 'DM Sans', sans-serif;
+    color: var(--muted);
+    display: block;
+    text-align: center;
+    font-weight: 400;
+  }
+
+  /* ── MEAL CARD ── */
+  .meal-card {
+    background: white;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.15s;
+  }
+  .meal-header {
+    display: flex;
+    align-items: center;
+    padding: 13px 16px;
+    cursor: pointer;
+    user-select: none;
+    gap: 10px;
+  }
+  .meal-icon {
+    width: 38px; height: 38px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .meal-info { flex: 1; }
+  .meal-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .meal-status {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .meal-status.done { color: var(--green); }
+  .meal-chevron {
+    color: var(--muted);
+    font-size: 12px;
+    transition: transform 0.25s;
+  }
+  .meal-card.open .meal-chevron { transform: rotate(180deg); }
+
+  .meal-body {
+    display: none;
+    padding: 0 16px 14px;
+    border-top: 1px solid var(--plum-pale);
+  }
+  .meal-card.open .meal-body { display: block; }
+
+  /* ── FOOD ITEMS ── */
+  .food-group-label {
+    font-size: 9px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 12px 0 6px;
+    font-weight: 600;
+  }
+  .food-options {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .food-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    background: var(--plum-pale);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1.5px solid transparent;
+  }
+  .food-option:active { transform: scale(0.98); }
+  .food-option.checked {
+    background: var(--green-bg);
+    border-color: var(--green);
+  }
+  .food-check {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--plum-mid);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.2s;
+    font-size: 11px;
+  }
+  .food-option.checked .food-check {
+    background: var(--green);
+    border-color: var(--green);
+    color: white;
+  }
+  .food-text { flex: 1; font-size: 13px; color: var(--text); }
+  .food-qty {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  /* ── PROGRESS RING ── */
+  .day-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 0 14px;
+  }
+  .progress-ring-wrap {
+    position: relative;
+    width: 80px; height: 80px;
+  }
+  .progress-ring-wrap svg { transform: rotate(-90deg); }
+  .progress-ring-text {
+    position: absolute;
+    inset: 0;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+  }
+  .progress-ring-pct {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--plum);
+    line-height: 1;
+  }
+  .progress-ring-label {
+    font-size: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+  }
+  .progress-ring-msg {
+    margin-left: 16px;
+    font-size: 13px;
+    color: var(--text);
+    max-width: 180px;
+    line-height: 1.5;
+  }
+  .progress-ring-msg strong { color: var(--plum); }
+
+  /* ── MEAL PREP TAB ── */
+  .week-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .week-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+  }
+  .week-nav-btn {
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    border: 1.5px solid var(--plum-mid);
+    background: white;
+    color: var(--plum);
+    font-size: 16px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .week-nav-btn:hover { background: var(--plum); color: white; }
+
+  .week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .week-day {
+    text-align: center;
+    cursor: pointer;
+  }
+  .week-day-name {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    font-weight: 600;
+  }
+  .week-day-num {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px;
+    font-weight: 500;
+    margin: 0 auto;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+    color: var(--text);
+  }
+  .week-day-num.today { background: var(--plum); color: white; }
+  .week-day-num.has-plan { border-color: var(--plum-mid); }
+  .week-day-num.full-plan {
+    background: var(--green-bg);
+    border-color: var(--green);
+    color: var(--green);
+  }
+
+  /* PREP MEAL PLANNER */
+  .prep-day-card {
+    background: white;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .prep-day-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 13px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .prep-day-name {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text);
+  }
+  .prep-day-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+  .prep-complete-badge {
+    background: var(--green-bg);
+    color: var(--green);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+  .prep-incomplete-badge {
+    background: var(--plum-pale);
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 8px;
+    border-radius: 10px;
+  }
+
+  .prep-day-body {
+    display: none;
+    padding: 0 16px 14px;
+    border-top: 1px solid var(--plum-pale);
+  }
+  .prep-day-card.open .prep-day-body { display: block; }
+  .prep-day-card.open .prep-day-header .prep-chevron { transform: rotate(180deg); }
+  .prep-chevron { font-size: 12px; color: var(--muted); transition: transform 0.25s; }
+
+  .prep-meal-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--plum-pale);
+  }
+  .prep-meal-row:last-child { border-bottom: none; }
+  .prep-meal-icon-sm {
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .prep-meal-name-sm { font-size: 12px; font-weight: 600; color: var(--text); }
+  .prep-food-tag {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+  }
+  .prep-edit-btn {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--plum);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 4px 10px;
+    border: 1px solid var(--plum-mid);
+    border-radius: 8px;
+    background: var(--plum-pale);
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(30, 18, 25, 0.55);
+    z-index: 200;
+    align-items: flex-end;
+    justify-content: center;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: white;
+    border-radius: 24px 24px 0 0;
+    padding: 20px;
+    width: 100%;
+    max-width: 430px;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .modal-handle {
+    width: 36px; height: 4px;
+    background: var(--plum-mid);
+    border-radius: 10px;
+    margin: 0 auto 16px;
+  }
+  .modal-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .modal-sub { font-size: 12px; color: var(--muted); margin-bottom: 16px; }
+  .modal-group-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 600;
+    margin: 12px 0 6px;
+  }
+  .modal-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--plum-pale);
+    border-radius: 10px;
+    margin-bottom: 6px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+  }
+  .modal-option.selected {
+    background: var(--plum);
+    border-color: var(--plum);
+    color: white;
+  }
+  .modal-option.selected .modal-opt-qty { color: rgba(255,255,255,0.7); }
+  .modal-opt-text { flex: 1; font-size: 13px; }
+  .modal-opt-qty { font-size: 11px; color: var(--muted); }
+  .modal-save-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--plum);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 16px;
+    font-family: 'DM Sans', sans-serif;
+    transition: opacity 0.2s;
+  }
+  .modal-save-btn:hover { opacity: 0.9; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 430px;
+    background: white;
+    border-top: 1px solid var(--plum-mid);
+    display: flex;
+    z-index: 150;
+    box-shadow: 0 -4px 20px rgba(107,45,94,0.08);
+  }
+  .bottom-nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 0 12px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .bottom-nav-item .nav-icon { font-size: 20px; margin-bottom: 3px; }
+  .bottom-nav-item.active { color: var(--plum); }
+
+  /* ── SHOPPING LIST ── */
+  .shop-section {
+    background: white;
+    border-radius: var(--radius);
+    margin-bottom: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+  .shop-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--plum-pale);
+  }
+  .shop-section-icon {
+    width: 34px; height: 34px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .shop-section-title { font-weight: 600; font-size: 13px; }
+  .shop-section-body { padding: 10px 16px; }
+  .shop-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--plum-pale);
+    cursor: pointer;
+  }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-check {
+    width: 20px; height: 20px;
+    border-radius: 6px;
+    border: 2px solid var(--plum-mid);
+    background: white;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 11px;
+    transition: all 0.2s;
+  }
+  .shop-item.bought .shop-check { background: var(--green); border-color: var(--green); color: white; }
+  .shop-item-text { flex: 1; font-size: 13px; }
+  .shop-item.bought .shop-item-text { text-decoration: line-through; color: var(--muted); }
+
+  .section-title-top {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+
+  /* Animations */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .panel.active { animation: fadeUp 0.25s ease; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      Mi Plan
+      <span>Sofia Bernate · 1300 kcal</span>
+    </div>
+    <div class="date-pill" id="topDate"></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('hoy')">Hoy</div>
+  <div class="tab" onclick="switchTab('prep')">Meal Prep</div>
+  <div class="tab" onclick="switchTab('lista')">Lista</div>
+</div>
+
+<!-- ═══════════════════════════════ TAB: HOY ═══════════════════════════════ -->
+<div class="panel active" id="tab-hoy">
+
+  <!-- Day navigation -->
+  <div class="day-nav">
+    <button class="day-nav-btn" onclick="changeDay(-1)">‹</button>
+    <div class="day-label" id="dayLabel">
+      Lunes<span id="daySubLabel">Hoy</span>
+    </div>
+    <button class="day-nav-btn" onclick="changeDay(1)">›</button>
+  </div>
+
+  <!-- Progress ring -->
+  <div class="day-progress">
+    <div class="progress-ring-wrap">
+      <svg width="80" height="80" viewBox="0 0 80 80">
+        <circle cx="40" cy="40" r="34" fill="none" stroke="#f0e4ec" stroke-width="6"/>
+        <circle id="progressRing" cx="40" cy="40" r="34" fill="none" stroke="#6b2d5e" stroke-width="6"
+          stroke-linecap="round" stroke-dasharray="213.6" stroke-dashoffset="213.6" style="transition:stroke-dashoffset 0.5s ease"/>
+      </svg>
+      <div class="progress-ring-text">
+        <div class="progress-ring-pct" id="progressPct">0%</div>
+        <div class="progress-ring-label">listo</div>
+      </div>
+    </div>
+    <div class="progress-ring-msg" id="progressMsg">
+      Marca lo que ya comiste y ve tu avance del día.
+    </div>
+  </div>
+
+  <!-- Macros -->
+  <div class="macro-summary">
+    <h3>Macros del día</h3>
+    <div class="macro-row">
+      <div class="macro-item">
+        <div class="m-val">1300</div>
+        <div class="m-label">kcal</div>
+        <div class="m-progress"><div class="m-progress-fill" id="mp-kcal" style="width:0%"></div></div>
+      </div>
+      <div class="macro-item">
+        <div class="m-val">140g</div>
+        <div class="m-label">Proteína</div>
+        <div class="m-progress"><div class="m-progress-fill" id="mp-prot" style="width:0%"></div></div>
+      </div>
+      <div class="macro-item">
+        <div class="m-val">130g</div>
+        <div class="m-label">Carbos</div>
+        <div class="m-progress"><div class="m-progress-fill" id="mp-carb" style="width:0%"></div></div>
+      </div>
+      <div class="macro-item">
+        <div class="m-val">38g</div>
+        <div class="m-label">Grasas</div>
+        <div class="m-progress"><div class="m-progress-fill" id="mp-fat" style="width:0%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Meal cards -->
+  <div id="mealCards"></div>
+</div>
+
+<!-- ═══════════════════════════════ TAB: MEAL PREP ═══════════════════════════════ -->
+<div class="panel" id="tab-prep">
+  <div class="section-title-top">Meal Prep Semanal</div>
+
+  <!-- Week nav -->
+  <div class="week-header">
+    <button class="week-nav-btn" onclick="changeWeek(-1)">‹</button>
+    <div style="font-size:13px; color:var(--muted);" id="weekRangeLabel"></div>
+    <button class="week-nav-btn" onclick="changeWeek(1)">›</button>
+  </div>
+
+  <!-- Week days strip -->
+  <div class="week-days" id="weekDays"></div>
+
+  <!-- Day prep cards -->
+  <div id="prepCards"></div>
+</div>
+
+<!-- ═══════════════════════════════ TAB: LISTA ═══════════════════════════════ -->
+<div class="panel" id="tab-lista">
+  <div class="section-title-top">Lista del mercado</div>
+  <p style="font-size:12px; color:var(--muted); margin-bottom:16px;">Basada en tu meal prep de la semana · toca para marcar lo que ya tienes</p>
+  <div id="shopList"></div>
+</div>
+
+<!-- MODAL: food picker -->
+<div class="modal-overlay" id="modal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-handle"></div>
+    <div class="modal-title" id="modalTitle">Elige tu alimento</div>
+    <div class="modal-sub" id="modalSub"></div>
+    <div id="modalBody"></div>
+    <button class="modal-save-btn" onclick="saveModal()">Guardar</button>
+  </div>
+</div>
+
+<script>
+// ── DATA ─────────────────────────────────────────────────────────────────────
+
+const DAYS_ES = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+const DAYS_SHORT = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+const MONTHS_ES = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+const FOOD_OPTIONS = {
+  proteico: [
+    { name: 'Pollo a la plancha', qty: '180g cocido' },
+    { name: 'Carne de res (punta de anca)', qty: '180g cocido' },
+    { name: 'Pescado (salmón / tilapia)', qty: '180g cocido' },
+    { name: 'Cerdo (filete)', qty: '180g cocido' },
+    { name: 'Pierna / pernil / costillas', qty: '360g cocido' },
+    { name: 'Huevos', qty: '3 unidades' },
+  ],
+  energetico: [
+    { name: 'Arroz blanco o integral', qty: '120g cocido' },
+    { name: 'Papa / yuca / plátano', qty: '140g cocido' },
+    { name: 'Pasta', qty: '160g cocido' },
+    { name: 'Arepa de maíz o yuca', qty: '45g (1 UN med)' },
+    { name: 'Avena en hojuelas', qty: '40g / 3 cdas' },
+    { name: 'Pan integral', qty: '2 UN' },
+    { name: 'Leguminosas', qty: '120g cocido' },
+  ],
+  lacteo: [
+    { name: 'Yogurt sin azúcar / kéfir', qty: '150g' },
+    { name: 'Leche', qty: '200ml' },
+    { name: 'Queso campesino / cuajada', qty: '50g' },
+    { name: 'Mozzarella descremado', qty: '2 TJ' },
+  ],
+  fruta: [
+    { name: 'Fresas', qty: '120g' },
+    { name: 'Mango', qty: '120g' },
+    { name: 'Mix kiwi + arándanos', qty: '120g' },
+    { name: 'Papaya', qty: '120g' },
+    { name: 'Sandía', qty: '120g' },
+    { name: 'Banano', qty: '120g' },
+  ],
+  graso: [
+    { name: 'Aguacate Hass', qty: '½ UN / 60g' },
+    { name: 'Frutos secos', qty: '30g' },
+    { name: 'Aguacate criollo', qty: '1 TJ / 60g' },
+  ],
+  proteina_polvo: [
+    { name: 'Biowhey Protein (Allen Nutrition)', qty: '1 servicio = 2 scoops' },
+  ],
+  verdura: [
+    { name: 'Ensalada lechuga + tomate', qty: 'A preferencia' },
+    { name: 'Bastones de zanahoria', qty: 'A preferencia' },
+    { name: 'Espárragos asados', qty: 'A preferencia' },
+    { name: 'Brócoli al vapor', qty: 'A preferencia' },
+    { name: 'Pepino + zanahoria', qty: 'A preferencia' },
+  ],
+};
+
+const MEAL_TEMPLATES = [
+  {
+    id: 'desayuno',
+    name: 'Desayuno',
+    icon: '🌅',
+    color: '#FFF3E0',
+    groups: [
+      { key: 'proteico', label: 'Alimento proteico', options: FOOD_OPTIONS.proteico, fixed: '3 huevos (o elige otro)' },
+      { key: 'energetico', label: 'Alimento energético', options: FOOD_OPTIONS.energetico, qty: '30–50g' },
+      { key: 'lacteo', label: 'Lácteo', options: FOOD_OPTIONS.lacteo },
+      { key: 'fruta', label: 'Fruta', options: FOOD_OPTIONS.fruta, qty: '120g' },
+    ]
+  },
+  {
+    id: 'onces',
+    name: 'Onces / Nueves',
+    icon: '🍎',
+    color: '#FCE4EC',
+    groups: [
+      { key: 'fruta', label: 'Fruta', options: FOOD_OPTIONS.fruta, qty: '120g' },
+      { key: 'lacteo', label: 'Lácteo', options: FOOD_OPTIONS.lacteo },
+      { key: 'proteina_polvo', label: 'Proteína en polvo', options: FOOD_OPTIONS.proteina_polvo },
+    ]
+  },
+  {
+    id: 'almuerzo',
+    name: 'Almuerzo',
+    icon: '🍽️',
+    color: '#E8F5E9',
+    groups: [
+      { key: 'proteico', label: 'Alimento proteico', options: FOOD_OPTIONS.proteico, qty: '180g cocido' },
+      { key: 'energetico', label: 'Alimento energético', options: FOOD_OPTIONS.energetico, qty: '100–160g cocido' },
+      { key: 'verdura', label: 'Verdura / Ensalada', options: FOOD_OPTIONS.verdura },
+    ]
+  },
+  {
+    id: 'cena',
+    name: 'Cena',
+    icon: '🌙',
+    color: '#EDE7F6',
+    groups: [
+      { key: 'proteico', label: 'Alimento proteico', options: FOOD_OPTIONS.proteico, qty: '180g cocido' },
+      { key: 'verdura', label: 'Verdura / Ensalada', options: FOOD_OPTIONS.verdura },
+      { key: 'graso', label: 'Alimento graso', options: FOOD_OPTIONS.graso, qty: '60g' },
+    ]
+  },
+];
+
+// STATE
+let currentDayOffset = 0; // 0 = today
+let weekOffset = 0;
+
+// Storage key helpers
+function dayKey(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return `day_${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+}
+function getDayData(offset) {
+  const key = dayKey(offset);
+  const raw = localStorage.getItem(key);
+  return raw ? JSON.parse(raw) : {};
+}
+function setDayData(offset, data) {
+  localStorage.setItem(dayKey(offset), JSON.stringify(data));
+}
+function getPrepData() {
+  const raw = localStorage.getItem('prepData');
+  return raw ? JSON.parse(raw) : {};
+}
+function setPrepData(data) {
+  localStorage.setItem('prepData', JSON.stringify(data));
+}
+function getShopData() {
+  const raw = localStorage.getItem('shopData');
+  return raw ? JSON.parse(raw) : {};
+}
+function setShopData(data) {
+  localStorage.setItem('shopData', JSON.stringify(data));
+}
+
+// ── TAB SWITCHING ──────────────────────────────────────────────────────────
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', ['hoy','prep','lista'][i] === tab);
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'lista') renderShopList();
+}
+
+// ── HOY TAB ───────────────────────────────────────────────────────────────
+function changeDay(dir) {
+  currentDayOffset += dir;
+  renderHoy();
+}
+
+function getDateForOffset(offset) {
+  const d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d;
+}
+
+function renderHoy() {
+  const d = getDateForOffset(currentDayOffset);
+  const dayName = DAYS_ES[d.getDay()];
+  const sub = currentDayOffset === 0 ? 'Hoy' : currentDayOffset === -1 ? 'Ayer' : currentDayOffset === 1 ? 'Mañana' : `${d.getDate()} de ${MONTHS_ES[d.getMonth()]}`;
+  document.getElementById('dayLabel').innerHTML = dayName + `<span>${sub}</span>`;
+
+  const data = getDayData(currentDayOffset);
+  renderMealCards(data);
+  updateProgress(data);
+}
+
+function renderMealCards(data) {
+  const container = document.getElementById('mealCards');
+  container.innerHTML = '';
+  MEAL_TEMPLATES.forEach(meal => {
+    const mData = data[meal.id] || {};
+    const totalGroups = meal.groups.length;
+    const checkedGroups = meal.groups.filter(g => mData[g.key] && mData[g.key].checked).length;
+    const isDone = checkedGroups === totalGroups;
+
+    const card = document.createElement('div');
+    card.className = 'meal-card';
+    card.id = 'mcard-' + meal.id;
+
+    let bodyHTML = '';
+    meal.groups.forEach(group => {
+      const gData = mData[group.key] || {};
+      const selected = gData.selected || null;
+      const checked = gData.checked || false;
+      bodyHTML += `<div class="food-group-label">${group.label}</div><div class="food-options">`;
+      if (selected) {
+        // Show the selected food
+        bodyHTML += `
+          <div class="food-option ${checked ? 'checked' : ''}" onclick="toggleFood('${meal.id}','${group.key}')">
+            <div class="food-check">${checked ? '✓' : ''}</div>
+            <div class="food-text">${selected.name}</div>
+            <div class="food-qty">${selected.qty}</div>
+          </div>
+          <div style="font-size:11px; color:var(--plum); cursor:pointer; padding:4px 0 0 2px;" onclick="openModal('${meal.id}','${group.key}','${encodeURIComponent(group.label)}')">✎ Cambiar opción</div>
+        `;
+      } else {
+        // Show first option checked by default (or prompt to pick)
+        bodyHTML += `
+          <div class="food-option" onclick="openModal('${meal.id}','${group.key}','${encodeURIComponent(group.label)}')">
+            <div class="food-check" style="border-color:var(--plum-light)">+</div>
+            <div class="food-text" style="color:var(--muted)">Elige tu ${group.label.toLowerCase()}</div>
+          </div>
+        `;
+      }
+      bodyHTML += '</div>';
+    });
+
+    card.innerHTML = `
+      <div class="meal-header" onclick="toggleCard('mcard-${meal.id}')">
+        <div class="meal-icon" style="background:${meal.color}">${meal.icon}</div>
+        <div class="meal-info">
+          <div class="meal-name">${meal.name}</div>
+          <div class="meal-status ${isDone ? 'done' : ''}">${isDone ? '✓ Completado' : `${checkedGroups} de ${totalGroups} grupos`}</div>
+        </div>
+        <div class="meal-chevron">▾</div>
+      </div>
+      <div class="meal-body">${bodyHTML}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+function toggleCard(id) {
+  const card = document.getElementById(id);
+  if (card) card.classList.toggle('open');
+}
+
+function toggleFood(mealId, groupKey) {
+  const data = getDayData(currentDayOffset);
+  if (!data[mealId]) data[mealId] = {};
+  if (!data[mealId][groupKey]) data[mealId][groupKey] = {};
+  data[mealId][groupKey].checked = !data[mealId][groupKey].checked;
+  setDayData(currentDayOffset, data);
+  renderHoy();
+  document.getElementById('mcard-' + mealId).classList.add('open');
+}
+
+function updateProgress(data) {
+  let total = 0, done = 0;
+  MEAL_TEMPLATES.forEach(meal => {
+    const mData = data[meal.id] || {};
+    meal.groups.forEach(g => {
+      total++;
+      if (mData[g.key] && mData[g.key].checked) done++;
+    });
+  });
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  const circumference = 213.6;
+  const offset = circumference - (pct / 100) * circumference;
+  document.getElementById('progressRing').style.strokeDashoffset = offset;
+  document.getElementById('progressPct').textContent = pct + '%';
+
+  let msg = '';
+  if (pct === 0) msg = 'Marca lo que ya comiste y ve tu avance del día.';
+  else if (pct < 30) msg = '¡Buen comienzo! Sigue con el plan.';
+  else if (pct < 60) msg = 'Vas <strong>bien encaminada</strong>. Sigue así.';
+  else if (pct < 100) msg = 'Casi lo logras! <strong>Muy bien</strong>.';
+  else msg = '🎉 <strong>¡Día completo!</strong> Cumpliste tu plan.';
+  document.getElementById('progressMsg').innerHTML = msg;
+
+  // macro progress (simplified: proportional to items checked)
+  const fills = ['mp-kcal','mp-prot','mp-carb','mp-fat'];
+  fills.forEach(id => {
+    document.getElementById(id).style.width = pct + '%';
+  });
+}
+
+// ── MODAL ──────────────────────────────────────────────────────────────────
+let modalState = {};
+
+function openModal(mealId, groupKey, labelEncoded) {
+  const label = decodeURIComponent(labelEncoded);
+  const meal = MEAL_TEMPLATES.find(m => m.id === mealId);
+  const group = meal.groups.find(g => g.key === groupKey);
+  const data = getDayData(currentDayOffset);
+  const current = (data[mealId] && data[mealId][groupKey] && data[mealId][groupKey].selected) || null;
+
+  modalState = { mealId, groupKey, selected: current };
+
+  document.getElementById('modalTitle').textContent = label;
+  document.getElementById('modalSub').textContent = meal.name + ' · Elige una opción';
+
+  let html = '';
+  group.options.forEach((opt, i) => {
+    const sel = current && current.name === opt.name;
+    html += `
+      <div class="modal-option ${sel ? 'selected' : ''}" onclick="selectModalOpt(${i}, this)" data-idx="${i}">
+        <div class="modal-opt-text">${opt.name}</div>
+        <div class="modal-opt-qty">${opt.qty}</div>
+      </div>
+    `;
+  });
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+}
+
+function selectModalOpt(idx, el) {
+  document.querySelectorAll('.modal-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  modalState.idx = idx;
+}
+
+function saveModal() {
+  if (modalState.idx === undefined) {
+    // pick first if none selected
+    const el = document.querySelector('.modal-option');
+    if (el) { el.classList.add('selected'); modalState.idx = 0; }
+  }
+  const { mealId, groupKey, idx } = modalState;
+  if (idx === undefined) { closeModal(); return; }
+
+  const meal = MEAL_TEMPLATES.find(m => m.id === mealId);
+  const group = meal.groups.find(g => g.key === groupKey);
+  const chosen = group.options[idx];
+
+  const data = getDayData(currentDayOffset);
+  if (!data[mealId]) data[mealId] = {};
+  data[mealId][groupKey] = { selected: chosen, checked: false };
+  setDayData(currentDayOffset, data);
+
+  closeModal();
+  renderHoy();
+  document.getElementById('mcard-' + mealId).classList.add('open');
+}
+
+function closeModal(e) {
+  if (!e || e.target.id === 'modal') {
+    document.getElementById('modal').classList.remove('open');
+    modalState = {};
+  }
+}
+
+// ── MEAL PREP TAB ──────────────────────────────────────────────────────────
+function changeWeek(dir) {
+  weekOffset += dir;
+  renderPrep();
+}
+
+function getWeekDates(offset) {
+  const today = new Date();
+  const dow = today.getDay(); // 0=Sun
+  const monday = new Date(today);
+  monday.setDate(today.getDate() - dow + 1 + offset * 7);
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday);
+    d.setDate(monday.getDate() + i);
+    dates.push(d);
+  }
+  return dates;
+}
+
+function renderPrep() {
+  const dates = getWeekDates(weekOffset);
+  const first = dates[0], last = dates[6];
+  document.getElementById('weekRangeLabel').textContent =
+    `${first.getDate()} ${MONTHS_ES[first.getMonth()]} – ${last.getDate()} ${MONTHS_ES[last.getMonth()]}`;
+
+  // Week strip
+  const strip = document.getElementById('weekDays');
+  strip.innerHTML = '';
+  const today = new Date();
+  dates.forEach((d, i) => {
+    const isToday = d.toDateString() === today.toDateString();
+    const prep = getPrepData();
+    const key = `${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+    const dayPrep = prep[key] || {};
+    const totalMeals = MEAL_TEMPLATES.length;
+    const filledMeals = MEAL_TEMPLATES.filter(m => {
+      return m.groups.some(g => dayPrep[m.id] && dayPrep[m.id][g.key]);
+    }).length;
+    const isFull = filledMeals === totalMeals;
+    const hasAny = filledMeals > 0;
+
+    const wrap = document.createElement('div');
+    wrap.className = 'week-day';
+    wrap.innerHTML = `
+      <div class="week-day-name">${DAYS_SHORT[d.getDay()]}</div>
+      <div class="week-day-num ${isToday ? 'today' : isFull ? 'full-plan' : hasAny ? 'has-plan' : ''}">${d.getDate()}</div>
+    `;
+    strip.appendChild(wrap);
+  });
+
+  // Day prep cards
+  const container = document.getElementById('prepCards');
+  container.innerHTML = '';
+  dates.forEach((d, i) => {
+    const key = `${d.getFullYear()}_${d.getMonth()}_${d.getDate()}`;
+    const prep = getPrepData();
+    const dayPrep = prep[key] || {};
+    const isToday = d.toDateString() === (new Date()).toDateString();
+
+    const filledMeals = MEAL_TEMPLATES.filter(m =>
+      m.groups.some(g => dayPrep[m.id] && dayPrep[m.id][g.key])
+    ).length;
+    const isFull = filledMeals === MEAL_TEMPLATES.length;
+
+    const card = document.createElement('div');
+    card.className = 'prep-day-card';
+    card.id = 'prepcard-' + key;
+
+    let mealsHTML = '';
+    MEAL_TEMPLATES.forEach(meal => {
+      const mData = dayPrep[meal.id] || {};
+      const foods = meal.groups.map(g => mData[g.key] ? mData[g.key].name : null).filter(Boolean);
+      mealsHTML += `
+        <div class="prep-meal-row">
+          <div class="prep-meal-icon-sm" style="background:${meal.color}">${meal.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div class="prep-meal-name-sm">${meal.name}</div>
+            <div class="prep-food-tag">${foods.length > 0 ? foods.join(' · ') : 'Sin planear'}</div>
+          </div>
+          <div class="prep-edit-btn" onclick="openPrepModal('${key}','${meal.id}')">Planear</div>
+        </div>
+      `;
+    });
+
+    card.innerHTML = `
+      <div class="prep-day-header" onclick="toggleCard('prepcard-${key}')">
+        <div>
+          <div class="prep-day-name">${DAYS_ES[d.getDay()]}${isToday ? ' <span style="font-size:10px;color:var(--plum)">· Hoy</span>' : ''}</div>
+          <div class="prep-day-sub">${d.getDate()} de ${MONTHS_ES[d.getMonth()]}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <div class="${isFull ? 'prep-complete-badge' : 'prep-incomplete-badge'}">${isFull ? '✓ Completo' : filledMeals + '/' + MEAL_TEMPLATES.length}</div>
+          <div class="prep-chevron">▾</div>
+        </div>
+      </div>
+      <div class="prep-day-body">${mealsHTML}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+let prepModalState = {};
+
+function openPrepModal(dayKey, mealId) {
+  const meal = MEAL_TEMPLATES.find(m => m.id === mealId);
+  const prep = getPrepData();
+  const dayPrep = prep[dayKey] || {};
+  const mData = dayPrep[mealId] || {};
+
+  prepModalState = { dayKey, mealId, selections: {} };
+
+  document.getElementById('modalTitle').textContent = meal.name;
+  document.getElementById('modalSub').textContent = 'Planea los alimentos para este tiempo de comida';
+
+  let html = '';
+  meal.groups.forEach(group => {
+    const current = mData[group.key] || null;
+    html += `<div class="modal-group-label">${group.label}</div>`;
+    group.options.forEach((opt, i) => {
+      const sel = current && current.name === opt.name;
+      if (sel) prepModalState.selections[group.key] = opt;
+      html += `
+        <div class="modal-option ${sel ? 'selected' : ''}"
+          onclick="selectPrepOpt('${group.key}', ${i}, this)">
+          <div class="modal-opt-text">${opt.name}</div>
+          <div class="modal-opt-qty">${opt.qty}</div>
+        </div>
+      `;
+    });
+  });
+
+  document.getElementById('modalBody').innerHTML = html;
+  document.getElementById('modal').classList.add('open');
+  // override save button
+  document.querySelector('.modal-save-btn').onclick = savePrepModal;
+}
+
+function selectPrepOpt(groupKey, idx, el) {
+  // Deselect others in same group
+  const meal = MEAL_TEMPLATES.find(m => m.id === prepModalState.mealId);
+  const group = meal.groups.find(g => g.key === groupKey);
+  // find all options for this group by traversing siblings
+  const allOpts = document.querySelectorAll('.modal-option');
+  // We'll track by data-group
+  el.setAttribute('data-group', groupKey);
+  // Deselect in same group
+  allOpts.forEach(o => { if (o.getAttribute('data-group') === groupKey) o.classList.remove('selected'); });
+  el.classList.add('selected');
+  prepModalState.selections[groupKey] = group.options[idx];
+}
+
+function savePrepModal() {
+  const { dayKey, mealId, selections } = prepModalState;
+  const prep = getPrepData();
+  if (!prep[dayKey]) prep[dayKey] = {};
+  if (!prep[dayKey][mealId]) prep[dayKey][mealId] = {};
+  Object.entries(selections).forEach(([gKey, opt]) => {
+    prep[dayKey][mealId][gKey] = opt;
+  });
+  setPrepData(prep);
+  buildShoppingList();
+  closeModal();
+  renderPrep();
+  // re-set save button
+  document.querySelector('.modal-save-btn').onclick = saveModal;
+}
+
+// ── SHOPPING LIST ──────────────────────────────────────────────────────────
+function buildShoppingList() {
+  const prep = getPrepData();
+  const items = {};
+
+  Object.values(prep).forEach(dayPrep => {
+    Object.values(dayPrep).forEach(mealData => {
+      Object.values(mealData).forEach(food => {
+        if (food && food.name) {
+          if (!items[food.name]) items[food.name] = { name: food.name, qty: food.qty, count: 0 };
+          items[food.name].count++;
+        }
+      });
+    });
+  });
+
+  const shopData = getShopData();
+  const newShop = {};
+  Object.values(items).forEach(item => {
+    newShop[item.name] = {
+      name: item.name,
+      qty: item.qty,
+      count: item.count,
+      bought: shopData[item.name] ? shopData[item.name].bought : false,
+    };
+  });
+  setShopData(newShop);
+}
+
+function renderShopList() {
+  buildShoppingList();
+  const shopData = getShopData();
+  const container = document.getElementById('shopList');
+  container.innerHTML = '';
+
+  if (Object.keys(shopData).length === 0) {
+    container.innerHTML = '<p style="font-size:13px;color:var(--muted);text-align:center;padding:32px 0">Planea tu semana en "Meal Prep" para ver la lista del mercado aquí.</p>';
+    return;
+  }
+
+  // Group by category
+  const categories = {
+    'Proteínas 🥩': ['pollo','carne','salmón','cerdo','pescado','pierna','pernil','costilla','huevo','huevos','Biowhey'],
+    'Frutas 🍓': ['fresa','mango','kiwi','arándano','papaya','sandía','banano'],
+    'Lácteos 🥛': ['yogurt','leche','queso','mozzarella','kéfir'],
+    'Carbohidratos 🌾': ['arroz','papa','yuca','plátano','pasta','arepa','avena','pan','leguminosa'],
+    'Grasas y otros 🥑': ['aguacate','frutos secos','aceite'],
+    'Verduras 🥦': ['ensalada','zanahoria','espárrago','brócoli','pepino','lechuga','tomate'],
+  };
+
+  const grouped = {};
+  Object.values(shopData).forEach(item => {
+    let cat = 'Otros';
+    for (const [c, kw] of Object.entries(categories)) {
+      if (kw.some(k => item.name.toLowerCase().includes(k.toLowerCase()))) { cat = c; break; }
+    }
+    if (!grouped[cat]) grouped[cat] = [];
+    grouped[cat].push(item);
+  });
+
+  Object.entries(grouped).forEach(([cat, items]) => {
+    const section = document.createElement('div');
+    section.className = 'shop-section';
+    let itemsHTML = items.map(item => `
+      <div class="shop-item ${item.bought ? 'bought' : ''}" onclick="toggleShopItem('${encodeURIComponent(item.name)}')">
+        <div class="shop-check">${item.bought ? '✓' : ''}</div>
+        <div class="shop-item-text">${item.name} <span style="color:var(--muted);font-size:11px;">(${item.count}× · ${item.qty})</span></div>
+      </div>
+    `).join('');
+    section.innerHTML = `
+      <div class="shop-section-header">
+        <div class="shop-section-title">${cat}</div>
+      </div>
+      <div class="shop-section-body">${itemsHTML}</div>
+    `;
+    container.appendChild(section);
+  });
+}
+
+function toggleShopItem(nameEncoded) {
+  const name = decodeURIComponent(nameEncoded);
+  const shopData = getShopData();
+  if (shopData[name]) shopData[name].bought = !shopData[name].bought;
+  setShopData(shopData);
+  renderShopList();
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────
+function init() {
+  const now = new Date();
+  document.getElementById('topDate').textContent =
+    `${now.getDate()} ${MONTHS_ES[now.getMonth()]}`;
+  renderHoy();
+  renderPrep();
+}
+
+init();
+</script>
+</body>
+</html>
